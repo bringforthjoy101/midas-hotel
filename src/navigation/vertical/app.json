@@ -1,0 +1,34 @@
+{
+    "apps": [
+        {
+            "name"           : "Pluhg",
+            "script"         : "./src/index.js",
+            "time"           : true,
+            "log-date-format": "YYYY-MM-DDTHH:MM:SSZ",
+            
+            "env": {
+                "JWT_KEY": "plugh",
+                "DATABASE_URI":"mongodb://localhost:27017/pluhg",
+                "TWILIO_ACCSID":"ACc2fa1b3c17b285acada046b182512819",
+                "TWILIOAUTHTOKEN":"9dde7dc9f7306e48257abaa64e2a9889",
+                "TWILIONUMBER":"+18049128257",
+                "TWILIOSMSSERVICEID":"VAc9dca390ff5d1ac7e3b70c1650e0ec31",
+                "TWILIOEMAILSERVICEID":"VAc9dca390ff5d1ac7e3b70c1650e0ec31",
+                "SENDGRIDAPIKEY":"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",
+                "MESSAGE_SERVICE_ID":"MG660982d0157a7a70c718bee8e922c985"
+            },
+            "env_develop": {
+                "NODE_ENV"     : "develop",
+                "PORT"         : 4000
+            },
+            "env_production"  : {
+                "NODE_ENV"          :   "production",
+                "PORT"              :   3000
+            },
+            "env_test"       : {
+                "NODE_ENV"     : "test",
+                "PORT"         : 5000
+            }
+        }
+    ]
+}
