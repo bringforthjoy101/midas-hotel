@@ -84,7 +84,7 @@ const UserInfoCard = ({ selectedProduct }) => {
 		store.allData?.forEach((p) => {
 			const itExists = p.products.find((item) => item.id === id)
 			console.log({itExists})
-			if(itExists) {
+			if (itExists) {
 				newArr.push(itExists)
 			}
 		})
