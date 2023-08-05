@@ -170,7 +170,7 @@ const UserInfoCard = ({ selectedProduct }) => {
 									<span>Qty Sold: </span>
 								</div>
 								<div className="ml-1">
-									<h6 className="mb-0">{getProductData(selectedProduct.id) || 0} - {(getProductData(selectedProduct.id, 'amount') || 0).toLocaleString('en-US', { style: 'currency', currency: 'NGN' })}</h6>
+									<h6 className="mb-0">{getProductData(selectedProduct.id) || 0} ( {(getProductData(selectedProduct.id, 'amount') || 0).toLocaleString('en-US', { style: 'currency', currency: 'NGN' })} )</h6>
 								</div>
 							</div>
 							<div className="d-flex align-items-center mr-2 mt-1">
@@ -179,8 +179,7 @@ const UserInfoCard = ({ selectedProduct }) => {
 								</div>
 								<div className="ml-1">
 									<h6 className="mb-0">
-										{(selectedProduct.type === 'DRINKS' && selectedProduct.inventory) ? getProductReceived() : 'N/A'}
-										{}
+										{(selectedProduct.type === 'DRINKS' && selectedProduct.inventory) ? (Number(getProductReceived()) - Number(getProductData(selectedProduct.id) || 0)) : 'N/A'}
 									</h6>
 								</div>
 							</div>
