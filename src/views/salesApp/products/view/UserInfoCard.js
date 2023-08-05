@@ -82,7 +82,11 @@ const UserInfoCard = ({ selectedProduct }) => {
 		console.log({store})
 		const newArr = []
 		store.allData?.forEach((p) => {
-			newArr.push(p.products.find((item) => item.id === id))
+			const itExists = p.products.find((item) => item.id === id)
+			console.log({itExists})
+			if(itExists) {
+				newArr.push(itExists)
+			}
 		})
 		console.log({newArr})
 		return type === 'qty'
