@@ -3,7 +3,7 @@ import Sidebar from '@components/sidebar'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { swal, apiRequest } from '@utils'
+import { swal, apiRequest, selectThemeColors } from '@utils'
 import { getAllData, getFilteredData } from '../store/action'
 
 // ** Third Party Components
@@ -16,10 +16,12 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
 	const [productsData, setProductsData] = useState({
 		name: '',
 		price: '',
+		type: ''
 		// image: 'https://res.cloudinary.com/bringforthjoy/image/upload/v1621720743/INVESTA/appia_reward_image_placeholder_um7q6g.jpg'
 	})
 
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [selectedType, setSelectedType] = useState('')
 
 	// ** Function to handle form submit
 	const onSubmit = async (event, errors) => {
@@ -38,6 +40,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
 					setProductsData({
 						name: '',
 						price: '',
+						type: ''
 					})
 					toggleSidebar()
 				} else {
@@ -46,6 +49,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
 					setProductsData({
 						name: '',
 						price: '',
+						type: ''
 					})
 					toggleSidebar()
 				}
@@ -69,6 +73,21 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
 						onChange={(e) => setProductsData({ ...productsData, name: e.target.value })}
 						required
 					/>
+				</FormGroup>
+				<FormGroup>
+					<Label for="type">Product Type</Label>
+					<AvInput
+						type="select"
+						id="type"
+						name="type"
+						value={productsData.type}
+						onChange={(e) => setProductsData({ ...productsData, type: e.target.value })}
+						required
+					>
+						<option value="">Select Product Type</option>
+						<option value="DRINKS">Drinks</option>
+						<option value="OTHERS">Others</option>
+					</AvInput>
 				</FormGroup>
 				<FormGroup>
 					<Label for="price">Products Price</Label>
