@@ -78,7 +78,8 @@ const UserInfoCard = ({ selectedProduct }) => {
 	}
 
 	const getProductData = (id, type = 'qty') => {
-		let store = useSelector((state) => state.sales)
+		const store = useSelector((state) => state.sales)
+		console.log({store})
 		const newArr = []
 		store.allData?.forEach((p) => {
 			newArr.push(p.products.find((item) => item.id === id))
