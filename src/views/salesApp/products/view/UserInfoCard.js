@@ -80,9 +80,10 @@ const UserInfoCard = ({ selectedProduct }) => {
 	const getProductData = (id, type = 'qty') => {
 		let store = useSelector((state) => state.sales)
 		const newArr = []
-		store = store.allData?.map((p) => {
+		store.allData?.forEach((p) => {
 			newArr.push(p.products.find((item) => item.id === id))
 		})
+		console.log({newArr})
 		return type === 'qty'
 			? newArr.map((item) => item?.qty).reduce((prev, curr) => prev + curr, 0)
 			: newArr.map((item) => item?.total).reduce((prev, curr) => prev + curr, 0)
