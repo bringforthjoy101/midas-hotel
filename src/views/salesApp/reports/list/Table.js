@@ -107,7 +107,7 @@ const ReportsTable = () => {
 	const [picker, setPicker] = useState([new Date(), new Date()])
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 	const [currentRole, setCurrentRole] = useState({ value: '', label: 'Select Role', number: 0 })
-	const [currentStatus, setCurrentStatus] = useState({ value: '', label: 'Select Status', number: 0 })
+	const [currentCategory, setCurrentCategory] = useState({ value: '', label: 'Select Category', number: 0 })
 	const [userData, setUserData] = useState(null)
 	const [modal, setModal] = useState(false)
 
@@ -120,7 +120,7 @@ const ReportsTable = () => {
 
 	// ** Get data on mount
 	useEffect(() => {
-		dispatch(getSalesReport({ startDate: moment().format('L').split('/').join('-'), endDate: moment().format('L').split('/').join('-') }))
+		dispatch(getSalesReport({ startDate: moment().format('L').split('/').join('-'), endDate: moment().format('L').split('/').join('-'), category: 'KITCHEN' }))
 		dispatch(
 			getFilteredData(store.allData.sales, {
 				page: currentPage,
@@ -135,6 +135,12 @@ const ReportsTable = () => {
 			setUserData(JSON.parse(localStorage.getItem('userData')))
 		}
 	}, [])
+
+	const categoryOptions = [
+		{ value: '', label: 'Select Category', number: 0 },
+		{ value: 'BAR', label: 'BAR', number: 1 },
+		{ value: 'RESTAURANT', label: 'RESTAUTANT', number: 2 },
+	]
 
 	// ** Function in get data on page change
 	const handlePagination = (page) => {
@@ -177,7 +183,7 @@ const ReportsTable = () => {
 		const range = date.map((d) => new Date(d).getTime())
 		setPicker(range)
 		dispatch(
-			getSalesReport({ startDate: moment(date[0]).format('L').split('/').join('-'), endDate: moment(date[1]).format('L').split('/').join('-') })
+			getSalesReport({ startDate: moment(date[0]).format('L').split('/').join('-'), endDate: moment(date[1]).format('L').split('/').join('-'), category: currentCategory.value })
 		)
 		dispatch(
 			getFilteredData(store.allData.sales, {
@@ -325,6 +331,9 @@ const ReportsTable = () => {
 					<td>
 						<span className="align-middle fw-bold">{product.product}</span>
 					</td>
+					<td>
+						<span className="align-middle fw-bold">{product.qty}</span>
+					</td>
 					<td>{`₦${product.sales.toLocaleString()}`}</td>
 				</tr>
 			)
@@ -348,6 +357,31 @@ const ReportsTable = () => {
 									value={searchTerm}
 									placeholder="Sale ID Search"
 									onChange={(e) => handleFilter(e.target.value)}
+								/>
+							</FormGroup>
+						</Col>
+						<Col lg="4" md="6">
+							<FormGroup>
+								<Label for="select">Select Category:</Label>
+								<Select
+									theme={selectThemeColors}
+									isClearable={false}
+									className="react-select"
+									classNamePrefix="select"
+									id="select"
+									options={categoryOptions}
+									value={currentCategory}
+									onChange={(data) => {
+										setCurrentCategory(data)
+										dispatch(
+											getFilteredData(store.allData, {
+												page: currentPage,
+												perPage: rowsPerPage,
+												status: data.value,
+												q: searchTerm,
+											})
+										)
+									}}
 								/>
 							</FormGroup>
 						</Col>
@@ -381,21 +415,23 @@ const ReportsTable = () => {
 									<Fragment>
 										<Table bordered responsive>
 											<thead>
-												<tr>
-													<th>Products</th>
-													<th>Sales</th>
-												</tr>
+											<tr>
+												<th>Products</th>
+												<th>Qty</th>
+												<th>Sales</th>
+											</tr>
 											</thead>
 											<tbody>
-												{renderTable()}
-												<tr key={'total'}>
-													<td>
-														<span className="align-middle fw-bold"> TOTAL </span>
-													</td>
-													<td>
-														<h3 className="align-middle fw-bold"> {`₦${store?.allData?.sumOfSales?.toLocaleString()}`} </h3>
-													</td>
-												</tr>
+											{renderTable()}
+											<tr key={'total'}>
+												<td></td>
+												<td>
+													<span className="align-middle fw-bold"> TOTAL </span>
+												</td>
+												<td>
+													<h3 className="align-middle fw-bold"> {`₦${store?.allData?.sumOfSales?.toLocaleString()}`} </h3>
+												</td>
+											</tr>
 											</tbody>
 										</Table>
 									</Fragment>

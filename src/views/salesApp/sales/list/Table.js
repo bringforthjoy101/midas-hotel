@@ -49,6 +49,8 @@ const TransactionTable = () => {
 	const [currentPage, setCurrentPage] = useState(1)
 	const [rowsPerPage, setRowsPerPage] = useState(10)
 
+	const [currentCategory, setCurrentCategory] = useState({ value: '', label: 'Select Category', number: 0 })
+
 	useEffect(() => {
 		dispatch(getAllData())
 		dispatch(
@@ -59,6 +61,12 @@ const TransactionTable = () => {
 			})
 		)
 	}, [dispatch])
+
+	const categoryOptions = [
+		{ value: '', label: 'Select Category', number: 0 },
+		{ value: 'BAR', label: 'BAR', number: 1 },
+		{ value: 'RESTAURANT', label: 'RESTAURANT', number: 2 },
+	]
 
 	// ** Function in get data on page change
 	const handlePagination = (page) => {
@@ -92,12 +100,13 @@ const TransactionTable = () => {
 			getFilteredData(store.allData, {
 				page: currentPage,
 				perPage: rowsPerPage,
+				category: currentCategory.value,
 				q: val,
 			})
 		)
 	}
 
-	const filteredData = store.allData.filter((item) => item.saleNumber.toLowerCase() || moment(item.createdAt).format('lll'))
+	const filteredData = store.allData.filter((item) => item.saleNumber.toLowerCase() || item.category.toLowerCase() || moment(item.createdAt).format('lll'))
 
 	// ** Custom Pagination
 	const CustomPagination = () => {
@@ -229,6 +238,31 @@ const TransactionTable = () => {
 									value={searchTerm}
 									placeholder="Search"
 									onChange={(e) => handleFilter(e.target.value)}
+								/>
+							</FormGroup>
+						</Col>
+						<Col lg="4" md="6">
+							<FormGroup>
+								<Label for="select">Select Category:</Label>
+								<Select
+									theme={selectThemeColors}
+									isClearable={false}
+									className="react-select"
+									classNamePrefix="select"
+									id="select"
+									options={categoryOptions}
+									value={currentCategory}
+									onChange={(data) => {
+										setCurrentCategory(data)
+										dispatch(
+											getFilteredData(store.allData, {
+												page: currentPage,
+												perPage: rowsPerPage,
+												status: data.value,
+												q: searchTerm,
+											})
+										)
+									}}
 								/>
 							</FormGroup>
 						</Col>

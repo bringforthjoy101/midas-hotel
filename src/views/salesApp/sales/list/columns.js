@@ -54,6 +54,13 @@ export const columns = [
 		),
 	},
 	{
+		name: 'Category ',
+		minWidth: '150px',
+		selector: 'category',
+		sortable: true,
+		cell: row => <span className="text-capitalize">{row.category}</span>
+	},
+	{
 		name: 'Amount',
 		width: '150px',
 		selector: 'amount',

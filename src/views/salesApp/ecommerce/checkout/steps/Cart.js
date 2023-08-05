@@ -123,6 +123,7 @@ const Cart = (props) => {
 
 	const subTotal = products.reduce((n, { total }) => n + total, 0)
 	const [selectedOption, setSelectedOption] = useState('')
+	const [selectedCategory, setSelectedCategory] = useState('')
 	const [salesData, setSalesData] = useState({
 		subTotal,
 		products,
@@ -133,8 +134,8 @@ const Cart = (props) => {
 	// ** Get data on mount
 	useEffect(() => {
 		// dispatch(getAllData(JSON.parse(localStorage.getItem('userData')).role))
-		setSalesData({ ...salesData, serverId: selectedOption.value, amount: totalAmount, amountPaid: totalAmount })
-	}, [dispatch, selectedOption])
+		setSalesData({ ...salesData, serverId: selectedOption.value, category: selectedCategory.value, amount: totalAmount, amountPaid: totalAmount })
+	}, [dispatch, selectedOption, selectedCategory])
 
 	const store = useSelector((state) => state.servers)
 
@@ -222,6 +223,19 @@ const Cart = (props) => {
 									options={renderServers(store.allData)}
 									isClearable={false}
 									onChange={setSelectedOption}
+								/>
+							</FormGroup>
+							<FormGroup>
+								<Label for="category">Category</Label>
+								<Select
+									theme={selectThemeColors}
+									className="react-select"
+									classNamePrefix="select"
+									required={true}
+									defaultValue={selectedCategory}
+									options={[{ value: 'BAR', label: 'BAR' }, { value: 'RESTAURANT', label: 'RESTAURANT' }]}
+									isClearable={false}
+									onChange={setSelectedCategory}
 								/>
 							</FormGroup>
 

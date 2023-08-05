@@ -94,6 +94,12 @@ const UserInfoCard = ({ selectedProduct }) => {
 			: newArr.map((item) => item?.total).reduce((prev, curr) => prev + curr, 0)
 	}
 
+	const getProductReceived = () => {
+		const received = selectedProduct?.inventory?.inventoryHistories.filter((item) => item.type === 'OUT')
+		console.log({received})
+		return received.map((item) => item?.qty).reduce((prev, curr) => prev + curr, 0)
+	}
+
 	return (
 		<Card>
 			<CardBody>
@@ -148,10 +154,10 @@ const UserInfoCard = ({ selectedProduct }) => {
 							</div>
 							<div className="d-flex align-items-center mr-2 mt-1">
 								<div className="color-box">
-									<span>Status: </span>
+									<span>Type: </span>
 								</div>
 								<div className="ml-1">
-									<h6 className="mb-0">{selectedProduct.status}</h6>
+									<h6 className="mb-0">{selectedProduct.type}</h6>
 								</div>
 							</div>
 						</div>
@@ -164,16 +170,17 @@ const UserInfoCard = ({ selectedProduct }) => {
 									<span>Qty Sold: </span>
 								</div>
 								<div className="ml-1">
-									<h6 className="mb-0">{getProductData(selectedProduct.id) || 0}</h6>
+									<h6 className="mb-0">{getProductData(selectedProduct.id) || 0} - {(getProductData(selectedProduct.id, 'amount') || 0).toLocaleString('en-US', { style: 'currency', currency: 'NGN' })}</h6>
 								</div>
 							</div>
 							<div className="d-flex align-items-center mr-2 mt-1">
 								<div className="color-box">
-									<span>Amount Sold: </span>
+									<span>QTY Available: </span>
 								</div>
 								<div className="ml-1">
 									<h6 className="mb-0">
-										{(getProductData(selectedProduct.id, 'amount') || 0).toLocaleString('en-US', { style: 'currency', currency: 'NGN' })}
+										{(selectedProduct.type === 'DRINKS' && selectedProduct.inventory) ? getProductReceived() : 'N/A'}
+										{}
 									</h6>
 								</div>
 							</div>
