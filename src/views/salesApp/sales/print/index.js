@@ -82,7 +82,7 @@ const Print = () => {
 					</div>
 					<div className="mt-md-0 mt-2">
 						<h4 className="text-right mb-1" style={{ color: '#000000' }}>
-							RECEIPT #{selectedSale?.saleNumber}
+							PRINT OUT #{selectedSale?.saleNumber}
 						</h4>
 						<div className="invoice-date-wrapper mb-50">
 							<span className="invoice-date-title">Date:</span>
