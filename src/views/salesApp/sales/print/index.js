@@ -24,7 +24,7 @@ const Print = () => {
 		// })
 		dispatch(getSale(id))
 		// setTimeout(window.print(), 10000)
-		// window.print()
+		window.print()
 	}, [])
 
 	const { selectedSale } = store

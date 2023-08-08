@@ -19,6 +19,7 @@ export const LogInventory = ({ selectedInventory }) => {
 		description: null,
 	})
 	const [formModal, setFormModal] = useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	const onSubmit = async (event, errors) => {
 		Object.keys(inventoryData).forEach((key) => {
@@ -26,12 +27,15 @@ export const LogInventory = ({ selectedInventory }) => {
 				delete inventoryData[key]
 			}
 		})
+		setIsSubmitting(true)
 		event?.preventDefault()
 		if (errors && !errors.length) {
 			await dispatch(logInventory(id, inventoryData))
 			dispatch(getAllData())
 			setFormModal(!formModal)
+			setIsSubmitting(false)
 		}
+		setIsSubmitting(false)
 	}
 
 	return (
@@ -95,7 +99,8 @@ export const LogInventory = ({ selectedInventory }) => {
 						</FormGroup>
 					</ModalBody>
 					<ModalFooter>
-						<Button.Ripple color="primary" type="submit">
+						<Button.Ripple color="primary" type="submit" disabled={isSubmitting}>
+							{isSubmitting && <Spinner color="white" size="sm" />}
 							<span className="ml-50">Log Inventory</span>
 						</Button.Ripple>
 					</ModalFooter>
