@@ -125,7 +125,7 @@ const Login = (props) => {
 				<Col className="d-flex align-items-center auth-bg px-2 p-lg-5" lg="4" sm="12">
 					<Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
 						<CardTitle tag="h2" className="font-weight-bold mb-1">
-							Welcome to PDF Arena 👋
+							Welcome to Midas Arena 👋
 						</CardTitle>
 						<CardText className="mb-2">Please sign-in to your account and start the adventure</CardText>
 						<AvForm className="auth-login-form mt-2" onSubmit={handleSubmit}>
