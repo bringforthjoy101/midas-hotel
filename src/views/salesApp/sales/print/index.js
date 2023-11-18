@@ -64,7 +64,7 @@ const Print = () => {
 					<div>
 						<div className="d-flex mb-1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 							<h4 className="text-right mb-1" style={{ color: '#000000' }}>
-								MIDAS ARENA
+								MIDAS HOTEL
 							</h4>
 							{/*<Media className="mr-25" center>*/}
 							{/*	<Media*/}
