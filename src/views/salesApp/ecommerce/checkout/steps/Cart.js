@@ -124,6 +124,8 @@ const Cart = (props) => {
 	const subTotal = products.reduce((n, { total }) => n + total, 0)
 	const [selectedOption, setSelectedOption] = useState('')
 	const [selectedCategory, setSelectedCategory] = useState('')
+	const [selectedGuest, setSelectedGuest] = useState('')
+	const [allGuest, setAllGuest] = useState([])
 	const [salesData, setSalesData] = useState({
 		subTotal,
 		products,
@@ -134,8 +136,12 @@ const Cart = (props) => {
 	// ** Get data on mount
 	useEffect(() => {
 		// dispatch(getAllData(JSON.parse(localStorage.getItem('userData')).role))
-		setSalesData({ ...salesData, serverId: selectedOption.value, category: selectedCategory.value, amount: totalAmount, amountPaid: totalAmount })
-	}, [dispatch, selectedOption, selectedCategory])
+		setSalesData({ ...salesData, serverId: selectedOption.value, category: selectedCategory.value, guestId: selectedGuest.value, amount: totalAmount, amountPaid: totalAmount })
+		apiRequest({ url: '/servers/get-guests', method: 'GET' }, dispatch).then((response) => {
+			console.log(response.data)
+			setAllGuest(response.data.data)
+		})
+	}, [dispatch, selectedOption, selectedCategory, selectedGuest])
 
 	const store = useSelector((state) => state.servers)
 
@@ -144,6 +150,7 @@ const Cart = (props) => {
 			return { value: server.id, label: server.fullName }
 		})
 	}
+
 
 	// ** Function to handle form submit
 	const onSubmit = async (event, errors) => {
@@ -236,6 +243,20 @@ const Cart = (props) => {
 									options={[{ value: 'BAR', label: 'BAR' }, { value: 'RESTAURANT', label: 'RESTAURANT' }]}
 									isClearable={false}
 									onChange={setSelectedCategory}
+								/>
+							</FormGroup>
+							<FormGroup>
+								<Label for="guest">Guest</Label>
+								<Select
+									theme={selectThemeColors}
+									className="react-select"
+									classNamePrefix="select"
+									defaultValue={selectedCategory}
+									options={allGuest.map((guest) => {
+										return { value: guest.id, label: guest.fullName }
+									})}
+									isClearable={false}
+									onChange={setSelectedGuest}
 								/>
 							</FormGroup>
 
