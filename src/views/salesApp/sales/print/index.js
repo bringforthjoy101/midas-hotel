@@ -100,6 +100,10 @@ const Print = () => {
 							<span className="invoice-date-title">Balance:</span>
 							<span className="invoice-date">₦{selectedSale?.balance.toLocaleString()}</span>
 						</div>
+						<div className="invoice-date-wrapper">
+							<p className="invoice-date-title">Guest:</p>
+							<p className="invoice-date">{selectedSale?.guestName || 'N/A'}</p>
+						</div>
 						{/* <div className="invoice-date-wrapper">
 							<span className="invoice-date-title">Status:</span>
 							<span className="invoice-date">

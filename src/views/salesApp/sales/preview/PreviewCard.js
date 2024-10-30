@@ -85,6 +85,10 @@ const PreviewCard = ({ data }) => {
 								</Badge>
 							</p>
 						</div>
+						<div className="invoice-date-wrapper">
+							<p className="invoice-date-title">Guest:</p>
+							<p className="invoice-date">{data.guestName || 'N/A'}</p>
+						</div>
 					</div>
 				</div>
 				{/* /Header */}

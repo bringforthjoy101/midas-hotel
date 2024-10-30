@@ -136,10 +136,12 @@ const Cart = (props) => {
 	// ** Get data on mount
 	useEffect(() => {
 		// dispatch(getAllData(JSON.parse(localStorage.getItem('userData')).role))
-		setSalesData({ ...salesData, serverId: selectedOption.value, category: selectedCategory.value, guestId: selectedGuest.value, amount: totalAmount, amountPaid: totalAmount })
+		setSalesData({ ...salesData, serverId: selectedOption.value, category: selectedCategory.value, guestId: selectedGuest.value, guestName: selectedGuest.label, amount: totalAmount, amountPaid: totalAmount })
 		apiRequest({ url: '/servers/get-guests', method: 'GET' }, dispatch).then((response) => {
-			console.log(response.data)
-			setAllGuest(response.data.data)
+			// console.log(response.data)
+			// console.log('sth', response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => lodge.reservationDetail.guest))
+			setAllGuest(response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => lodge.reservationDetail.guest))
+
 		})
 	}, [dispatch, selectedOption, selectedCategory, selectedGuest])
 
@@ -252,7 +254,7 @@ const Cart = (props) => {
 									className="react-select"
 									classNamePrefix="select"
 									defaultValue={selectedCategory}
-									options={allGuest.map((guest) => {
+									options={allGuest?.map((guest) => {
 										return { value: guest.id, label: guest.fullName }
 									})}
 									isClearable={false}
