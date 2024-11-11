@@ -482,8 +482,8 @@ mock.onGet('/apps/ecommerce/wishlist').reply(() => {
 // GET: Return Cart Products
 // ------------------------------------------------
 mock.onGet('/apps/ecommerce/cart').reply(async () => {
-	// const productsData = store.getState().ecommerce.services.length ? store.getState().ecommerce.services : await getProducts()
-	const productsData = await getProducts()
+	const productsData = store.getState().ecommerce.services.length ? store.getState().ecommerce.services : await getProducts()
+	// const productsData = await getProducts()
 	// console.log('productsData', productsData)
 	// console.log('data', data)
 	const products = data.userCart.map((cartProduct) => {
