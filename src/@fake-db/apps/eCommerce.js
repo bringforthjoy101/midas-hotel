@@ -370,12 +370,20 @@ import { store } from '@store/storeConfig/store'
 const { users } = store.getState()
 
 const getProducts = async () => {
+	
+	// console.log('response', response)
+	// store.dispatch({ type: 'GET_T_PRODUCTS', data: response.data.data, params: { q: '', sortBy: 'featured', perPage: 9, page: 1 } })
+	// store.dispatch({ type: 'GET_ALL_SALES_DATA', data: sales.data.data, params: { q: '', selectedSale: null, perPage: 9, page: 1 } })
+	// return response.data.data
+
 	const response = await apiRequest({ url: '/products', method: 'GET' })
 	const sales = await apiRequest({ url: '/sales', method: 'GET' })
-	console.log('response', response)
-	store.dispatch({ type: 'GET_T_PRODUCTS', data: response.data.data, params: { q: '', sortBy: 'featured', perPage: 9, page: 1 } })
+    
+    // console.log('response', response, response?.data.data.length)
+    store.dispatch({ type: 'GET_T_PRODUCTS', data: response?.data.data.filter(item => item.qty), params: { q: '', sortBy: 'featured', perPage: 9, page: 1 } })
 	store.dispatch({ type: 'GET_ALL_SALES_DATA', data: sales.data.data, params: { q: '', selectedSale: null, perPage: 9, page: 1 } })
-	return response.data.data
+    // console.log('available', response?.data.data.filter(item => item.qty > 0))
+    return response?.data.data.filter(item => item.qty > 0)
 }
 
 // ------------------------------------------------
@@ -386,11 +394,11 @@ mock.onGet('/apps/ecommerce/products').reply(async (config) => {
 	const { q = '', sortBy = 'featured', perPage = 9, page = 1 } = config.params
 	const queryLowered = q.toLowerCase()
 	// console.log(store.getState().ecommerce.products)
-	if (!store.getState().ecommerce.services.length) {
+	if (!store.getState().ecommerce.products.length) {
 		await getProducts()
 	}
-	// const products = store.getState().ecommerce.products.length ? store.getState().ecommerce.products : await getProducts()
-	const products = await getProducts()
+	const products = store.getState().ecommerce.products.length ? store.getState().ecommerce.products : await getProducts()
+	// const products = await getProducts()
 	const filteredData = products?.filter((product) => product.name.toLowerCase().includes(queryLowered))
 
 	let sortDesc = false
