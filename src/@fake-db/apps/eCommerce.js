@@ -394,10 +394,10 @@ mock.onGet('/apps/ecommerce/products').reply(async (config) => {
 	const { q = '', sortBy = 'featured', perPage = 9, page = 1 } = config.params
 	const queryLowered = q.toLowerCase()
 	// console.log(store.getState().ecommerce.products)
-	if (!store.getState().ecommerce.products.length) {
+	if (!store.getState().ecommerce.services.length) {
 		await getProducts()
 	}
-	const products = store.getState().ecommerce.products.length ? store.getState().ecommerce.products : await getProducts()
+	const products = store.getState().ecommerce.services.length ? store.getState().ecommerce.services : await getProducts()
 	// const products = await getProducts()
 	const filteredData = products?.filter((product) => product.name.toLowerCase().includes(queryLowered))
 
