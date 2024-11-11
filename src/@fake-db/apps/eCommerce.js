@@ -380,10 +380,10 @@ const getProducts = async () => {
 	const sales = await apiRequest({ url: '/sales', method: 'GET' })
     
     // console.log('response', response, response?.data.data.length)
-    store.dispatch({ type: 'GET_T_PRODUCTS', data: response?.data.data.filter(item => item.qty), params: { q: '', sortBy: 'featured', perPage: 9, page: 1 } })
+    store.dispatch({ type: 'GET_T_PRODUCTS', data: response?.data.data, params: { q: '', sortBy: 'featured', perPage: 9, page: 1 } })
 	store.dispatch({ type: 'GET_ALL_SALES_DATA', data: sales.data.data, params: { q: '', selectedSale: null, perPage: 9, page: 1 } })
     // console.log('available', response?.data.data.filter(item => item.qty > 0))
-    return response?.data.data.filter(item => item.qty > 0)
+    return response?.data.data
 }
 
 // ------------------------------------------------
