@@ -113,7 +113,7 @@ export const columns = [
 	},
 	{
 		name: 'Mode',
-		width: '150px',
+		width: '250px',
 		selector: 'mode',
 		sortable: true,
 		cell: (row) => (

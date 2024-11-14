@@ -127,6 +127,8 @@ const Cart = (props) => {
 	const [selectedMode, setSelectedMode] = useState('')
 	const [selectedGuest, setSelectedGuest] = useState('')
 	const [allGuest, setAllGuest] = useState([])
+	const [selectedServer, setSelectedServer] = useState('')
+	const [allServers, setAllServers] = useState([])
 	const [salesData, setSalesData] = useState({
 		subTotal,
 		products,
@@ -137,19 +139,19 @@ const Cart = (props) => {
 	// ** Get data on mount
 	useEffect(() => {
 		// dispatch(getAllData(JSON.parse(localStorage.getItem('userData')).role))
-		setSalesData({ ...salesData, serverId: selectedOption.value, mode: selectedMode.value, guestId: selectedGuest.guestId, guestName: selectedGuest.label, amount: totalAmount, amountPaid: totalAmount })
+		setSalesData({ ...salesData, serverId: selectedServer.value, mode: selectedMode.value, guestId: selectedGuest.guestId, guestName: selectedGuest.label, amount: totalAmount, amountPaid: totalAmount })
 		apiRequest({ url: '/servers/get-guests', method: 'GET' }, dispatch).then((response) => {
-			// console.log(response.data)
-			// console.log('sth', response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => lodge.reservationDetail.guest))
 			setAllGuest(response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => { return { ...lodge.reservationDetail.guest, room: lodge.reservationDetail.room } }))
-
 		})
-	}, [dispatch, selectedOption, selectedMode, selectedGuest])
+		apiRequest({ url: '/servers', method: 'GET' }, dispatch).then((response) => {
+			setAllServers(response.data.data)
+		})
+	}, [dispatch, selectedMode, selectedGuest, selectedServer])
 
-	const store = useSelector((state) => state.servers)
+	// const store = useSelector((state) => state.servers)
 
-	const renderServers = (servers) => {
-		return servers.map((server) => {
+	const renderServers = () => {
+		return allServers.map((server) => {
 			return { value: server.id, label: server.fullName }
 		})
 	}
@@ -229,10 +231,10 @@ const Cart = (props) => {
 									className="react-select"
 									classNamePrefix="select"
 									required={true}
-									defaultValue={selectedOption}
-									options={renderServers(store.allData)}
+									defaultValue={selectedServer}
+									options={renderServers()}
 									isClearable={false}
-									onChange={setSelectedOption}
+									onChange={setSelectedServer}
 								/>
 							</FormGroup>
 							<FormGroup>

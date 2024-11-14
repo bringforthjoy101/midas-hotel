@@ -156,3 +156,20 @@ export const changeUserRole = (userId, role) => {
 		}
 	}
 }
+
+// Reset user password
+export const resetUserPassword = (userId) => {
+	return async (dispatch) => {
+		const response = await apiRequest({ url: `/users/reset-password/${userId}`, method: 'GET' }, dispatch)
+		if (response) {
+			if (response.data.status) {
+				swal('Good!', `${response.data.message}.`, 'success')
+				await dispatch(getUser(userId))
+			} else {
+				swal('Oops!', `${response.data.message}.`, 'error')
+			}
+		} else {
+			swal('Oops!', 'Something went wrong with your network.', 'error')
+		}
+	}
+}

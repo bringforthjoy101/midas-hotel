@@ -2,7 +2,7 @@ import { useState } from 'react'
 // ** Reactstrap
 import { Card, CardHeader, CardBody, Badge, UncontrolledTooltip, Button } from 'reactstrap'
 
-import { activateUser, deactivateUser } from '../store/action'
+import { activateUser, deactivateUser, resetUserPassword } from '../store/action'
 import { store } from '@store/storeConfig/store'
 import { EditRole } from './EditRole'
 
@@ -43,6 +43,16 @@ const PlanCard = ({ selectedUser }) => {
 						Activate User
 					</Button.Ripple>
 				)}
+				<Button.Ripple
+						className="text-center mb-1"
+						color="info"
+						block
+						onClick={() => {
+							store.dispatch(resetUserPassword(selectedUser.id))
+						}}
+					>
+						Reset Password
+				</Button.Ripple>
 				<EditRole selectedUser={selectedUser} />
 			</CardBody>
 		</Card>

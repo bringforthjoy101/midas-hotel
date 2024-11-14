@@ -15,7 +15,7 @@ const userData = JSON.parse(localStorage.getItem('userData'))
 export default userData?.role === 'ADMIN'
 	? [...dashboards, ...stores, ...sales, ...products, ...inventories, ...users, ...servers, ...reports, ...settings]
 	: userData?.role === 'SALES_REP'
-	? [...dashboards, ...stores, ...sales, ...settings]
+	? [...dashboards, ...stores, ...sales, ...reports, ...settings]
 	: [...dashboards, ...stores, ...sales, ...inventories, ...reports, ...settings]
 
 // ** Merge & Export
