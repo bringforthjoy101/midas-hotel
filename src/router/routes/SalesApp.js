@@ -229,6 +229,10 @@ const SalesRepRoutes = [
 		layout: 'BlankLayout',
 		component: lazy(() => import('../../views/salesApp/sales/print')),
 	},
+	{
+		path: '/reports/list',
+		component: lazy(() => import('../../views/salesApp/reports/list')),
+	},
 ]
 
 const StoreRoutes = [
