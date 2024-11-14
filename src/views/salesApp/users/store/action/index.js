@@ -62,6 +62,26 @@ export const getUser = (id) => {
 	}
 }
 
+export const getSalesReport = ({ startDate, endDate, userId }) => {
+	return async (dispatch) => {
+		const body = JSON.stringify({ startDate, endDate, userId })
+		const response = await apiRequest({ url: '/sales/get-sales-summary-by-user', method: 'POST', body }, dispatch)
+		if (response) {
+			if (response.data.data && response.data.status) {
+
+				await dispatch({
+					type: 'GET_USER_REPORT_DATA',
+					data: response.data.data,
+				})
+			} else {
+				console.log(response.error)
+			}
+		} else {
+			swal('Oops!', 'Somthing went wrong with your network.', 'error')
+		}
+	}
+}
+
 // get user activity log
 export const getUserActivity = (id) => {
 	return async (dispatch) => {

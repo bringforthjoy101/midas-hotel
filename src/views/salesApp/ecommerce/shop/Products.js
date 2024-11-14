@@ -41,7 +41,7 @@ const ProductsPage = props => {
   // ** Render pages
   const renderPageItems = () => {
     const arrLength =
-      store.totalServices !== 0 && store.services.length !== 0 ? Number(store.totalServices) / store.services.length : 3
+      store.totalServices !== 0 && store.filtered.length !== 0 ? Number(store.totalServices) / store.services.length : 3
 
     return new Array(Math.trunc(arrLength)).fill().map((item, index) => {
       return (
@@ -84,14 +84,14 @@ const ProductsPage = props => {
             onClick={() => setSidebarOpen(false)}
           ></div>
           <ProductsSearchbar dispatch={dispatch} getProducts={getProducts} store={store} />
-          {store.services?.length ? (
+          {store.filtered?.length ? (
             <Fragment>
               <ProductCards
                 store={store}
                 dispatch={dispatch}
                 addToCart={addToCart}
                 activeView={activeView}
-                products={store.services}
+                products={store.filtered}
                 getProducts={getProducts}
                 getCartItems={getCartItems}
                 addToWishlist={addToWishlist}

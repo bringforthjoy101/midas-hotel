@@ -27,8 +27,18 @@ const PreviewCard = ({ data }) => {
 	}
 
 	const statusObj = {
-		PAID: 'light-warning',
-		PAID: 'light-success',
+		DRAFT: 'light-secondary',
+		COMPLETED: 'light-success',
+		CANCELLED: 'light-danger',
+	}
+
+	const modeObj = {
+		CASH: 'light-primary',
+		POS_MONIEPOINT: 'light-info',
+		POS_FIDELITY: 'light-info',
+		TRANSFER: 'light-success',
+		COMPLEMENTARY: 'light-warning',
+		GUEST: 'light-secondary',
 	}
 
 	// const discountedAmount = (Number(data.amount) - Number(orderData.discount))
@@ -82,6 +92,14 @@ const PreviewCard = ({ data }) => {
 							<p className="invoice-date">
 								<Badge className="text-capitalize" color={statusObj[data.status]} pill>
 									{data.status}
+								</Badge>
+							</p>
+						</div>
+						<div className="invoice-date-wrapper">
+							<p className="invoice-date-title">Payment Mode:</p>
+							<p className="invoice-date">
+								<Badge className="text-capitalize" color={modeObj[data.mode]} pill>
+									{data.mode}
 								</Badge>
 							</p>
 						</div>

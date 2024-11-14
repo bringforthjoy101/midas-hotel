@@ -18,6 +18,7 @@ import UserTimeline from './UserTimeline'
 
 // ** Styles
 import '@styles/react/apps/app-users.scss'
+import UserSalesSummary from './UserSalesSummary'
 
 const UserView = (props) => {
 	// ** Vars
@@ -56,10 +57,11 @@ const UserView = (props) => {
 			{userData?.role === 'ADMIN' ? (
 				<Row>
 					<Col md="12">
-						<UserTimeline
+						<UserSalesSummary />
+						{/* <UserTimeline
 							selectedUser={store.selectedUser}
 							data={store.userActivities.sort((a, b) => moment(b.date).format('YYYYMMDD') - moment(a.date).format('YYYYMMDD'))}
-						/>
+						/> */}
 					</Col>
 				</Row>
 			) : (

@@ -58,3 +58,27 @@ export const getSale = (id) => {
 		}
 	}
 }
+
+export const completeSale = (saleId) => {
+	return async dispatch => {
+	  const response = await apiRequest({url:`/sales/complete-sale/${saleId}`, method:'GET'}, dispatch)
+	  if (response && response.data.status) {
+		  return response.data
+	  } else {
+		console.log(response)
+		swal('Oops!', 'Something went wrong.', 'error')
+	  }
+	}
+}
+
+export const nullifySale = (saleid) => {
+	return async dispatch => {
+	  const response = await apiRequest({url:`/sales/cancel-sale/${saleId}`, method:'GET'}, dispatch)
+	  if (response && response.data.status) {
+		  return response.data
+	  } else {
+		console.log(response)
+		swal('Oops!', 'Something went wrong.', 'error')
+	  }
+	}
+}

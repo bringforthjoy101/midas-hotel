@@ -123,7 +123,8 @@ const Cart = (props) => {
 
 	const subTotal = products.reduce((n, { total }) => n + total, 0)
 	const [selectedOption, setSelectedOption] = useState('')
-	const [selectedCategory, setSelectedCategory] = useState('')
+	// const [selectedCategory, setSelectedCategory] = useState('')
+	const [selectedMode, setSelectedMode] = useState('')
 	const [selectedGuest, setSelectedGuest] = useState('')
 	const [allGuest, setAllGuest] = useState([])
 	const [salesData, setSalesData] = useState({
@@ -136,14 +137,14 @@ const Cart = (props) => {
 	// ** Get data on mount
 	useEffect(() => {
 		// dispatch(getAllData(JSON.parse(localStorage.getItem('userData')).role))
-		setSalesData({ ...salesData, serverId: selectedOption.value, category: selectedCategory.value, guestId: selectedGuest.value, guestName: selectedGuest.label, amount: totalAmount, amountPaid: totalAmount })
+		setSalesData({ ...salesData, serverId: selectedOption.value, mode: selectedMode.value, guestId: selectedGuest.guestId, guestName: selectedGuest.label, amount: totalAmount, amountPaid: totalAmount })
 		apiRequest({ url: '/servers/get-guests', method: 'GET' }, dispatch).then((response) => {
 			// console.log(response.data)
 			// console.log('sth', response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => lodge.reservationDetail.guest))
-			setAllGuest(response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => lodge.reservationDetail.guest))
+			setAllGuest(response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => { return { ...lodge.reservationDetail.guest, room: lodge.reservationDetail.room } }))
 
 		})
-	}, [dispatch, selectedOption, selectedCategory, selectedGuest])
+	}, [dispatch, selectedOption, selectedMode, selectedGuest])
 
 	const store = useSelector((state) => state.servers)
 
@@ -235,16 +236,23 @@ const Cart = (props) => {
 								/>
 							</FormGroup>
 							<FormGroup>
-								<Label for="category">Category</Label>
+								<Label for="mode">Payment Mode</Label>
 								<Select
 									theme={selectThemeColors}
 									className="react-select"
 									classNamePrefix="select"
 									required={true}
-									defaultValue={selectedCategory}
-									options={[{ value: 'BAR', label: 'BAR' }, { value: 'RESTAURANT', label: 'RESTAURANT' }]}
+									defaultValue={selectedMode}
+									options={[
+										{ value: 'CASH', label: 'CASH' }, 
+										{ value: 'POS_MONIEPOINT', label: 'POS- -MONIEPOINT' },
+										{ value: 'POS_FIDELITY', label: 'POS - FIDELITY' }, 
+										{ value: 'TRANSFER', label: 'TRANSFER' },
+										{ value: 'COMPLEMENTARY', label: 'COMPLEMENTARY' }, 
+										{ value: 'GUEST', label: 'GUEST' }
+									]}
 									isClearable={false}
-									onChange={setSelectedCategory}
+									onChange={setSelectedMode}
 								/>
 							</FormGroup>
 							<FormGroup>
@@ -253,9 +261,9 @@ const Cart = (props) => {
 									theme={selectThemeColors}
 									className="react-select"
 									classNamePrefix="select"
-									defaultValue={selectedCategory}
+									defaultValue={selectedGuest}
 									options={allGuest?.map((guest) => {
-										return { value: guest.id, label: guest.fullName }
+										return { value: guest.room.id, label: `${guest.fullName} (${guest.room.name})`, guestId: guest.id }
 									})}
 									isClearable={false}
 									onChange={setSelectedGuest}

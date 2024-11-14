@@ -4,7 +4,7 @@ import axios from 'axios'
 export const getProducts = (params) => {
 	return (dispatch) => {
 		return axios.get('/apps/ecommerce/products', { params }).then((res) => {
-			dispatch({ type: 'GET_PRODUCTS', data: res.data, params })
+			dispatch({ type: 'GET_PRODUCTS', data: res.data, params: {...params, perPage: res.data.total} })
 		})
 	}
 }

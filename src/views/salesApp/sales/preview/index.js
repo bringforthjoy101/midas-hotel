@@ -9,6 +9,7 @@ import { Row, Col, Alert } from 'reactstrap'
 // ** Invoice Preview Components
 import PreviewCard from './PreviewCard'
 import PreviewActions from './PreviewActions'
+import SpinnerComponent from '@src/@core/components/spinner/Loading-spinner'
 // import SendInvoiceSidebar from '../shared-sidebar/SidebarSendInvoice'
 // import AddPaymentSidebar from '../shared-sidebar/SidebarAddPayment'
 
@@ -57,12 +58,7 @@ const InvoicePreview = () => {
 			{/* <AddPaymentSidebar toggleSidebar={toggleAddSidebar} open={addPaymentOpen} /> */}
 		</div>
 	) : (
-		<Alert color="danger">
-			<h4 className="alert-heading">Sales not found</h4>
-			<div className="alert-body">
-				Sales with id: {id} doesn't exist. Check list of all invoices: <Link to="/sales/list">Sales List</Link>
-			</div>
-		</Alert>
+		<SpinnerComponent />
 	)
 }
 

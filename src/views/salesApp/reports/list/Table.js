@@ -324,17 +324,66 @@ const ReportsTable = () => {
 		}
 	}
 
+	const printReport = (sampleData, startDate, endDate) => {
+		console.log({ startDate, endDate })
+		// const convertTimestampToDate = (timestamp) => {
+		// 	const date = new Date(timestamp);
+		// 	return date.toLocaleDateString();
+		// };
+
+		// sampleData.itemsSold.forEach(item => {
+		// 	item.date = convertTimestampToDate(item.date);
+		// });
+		const printWindow = window.open('', '', 'width=302', 'height=800')
+		printWindow.document.write('<html><head><title>Sales Report</title>')
+		printWindow.document.write('<style>body { font-family: Courier, monospace; }</style>')
+		printWindow.document.write('</head><body>')
+		printWindow.document.write('<h2>MIDAS HOTELS</h2>')
+		printWindow.document.write('<p>Address: 123 Midas Avenue, Iworoko RD, Ado Ekiti</p>')
+		printWindow.document.write('<p>Contact: 08172044826, 08172044827</p>')
+		printWindow.document.write(`<h3>Sales Report</h3>`)
+		printWindow.document.write(`<p>From: ${new Date(picker[0]).toLocaleDateString()} To: ${new Date(picker[1]).toLocaleDateString()}</p>`)
+		printWindow.document.write('<table style="width:100%">')
+		printWindow.document.write('<tr><th style="text-align: left;">Item</th><th style="text-align: left;">Quantity</th><th style="text-align: left;">Total Amount</th></tr>')
+		sampleData.itemsSold.forEach(item => {
+			printWindow.document.write(`<tr><td>${item.name}</td><td>${item.quantity}</td><td>${item.totalAmount.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}</td></tr>`)
+		})
+		printWindow.document.write('</table>')
+		printWindow.document.write(`<p>Total Sales: ${sampleData.totalSales}</p>`)
+		printWindow.document.write(`<p>Total Amount: ₦${sampleData.totalAmount.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}</p>`)
+		printWindow.document.write('<h2>Sales Status</h2>')
+		printWindow.document.write('<table style="width:100%">')
+		printWindow.document.write('<tr><th style="text-align: left;">Status</th><th style="text-align: left;">Amount</th></tr>')
+		Object.keys(sampleData.byStatus).forEach(status => {
+			printWindow.document.write(`<tr><td>${status}</td><td>${sampleData.byStatus[status].toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}</td></tr>`)
+		})
+		printWindow.document.write('</table>')
+
+		printWindow.document.write('<h2>Payment Modes</h2>')
+		printWindow.document.write('<table style="width:100%">')
+		printWindow.document.write('<tr><th style="text-align: left;">Payment Mode</th><th style="text-align: left;">Amount</th></tr>')
+		Object.keys(sampleData.byPaymentMode).forEach(mode => {
+			printWindow.document.write(`<tr><td>${mode}</td><td>${sampleData.byPaymentMode[mode].toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}</td></tr>`)
+		})
+		printWindow.document.write('</table>')
+		printWindow.document.write('</body></html>')
+		printWindow.document.close()
+		printWindow.print()
+
+	}
+
 	const renderTable = () => {
-		return store?.allData?.summary?.map((product) => {
+		return store?.summaryData?.itemsSold?.map((product, key) => {
+			console.log({product})
 			return (
-				<tr key={product.product}>
+				<tr key={key}>
 					<td>
-						<span className="align-middle fw-bold">{product.product}</span>
+						<span className="align-middle fw-bold">{product.name}</span>
 					</td>
 					<td>
-						<span className="align-middle fw-bold">{product.qty}</span>
+						<span className="align-middle fw-bold">{product.quantity}</span>
 					</td>
-					<td>{`₦${product.sales.toLocaleString()}`}</td>
+					<td>{`₦${product.totalAmount.toLocaleString()}`}</td>
 				</tr>
 			)
 		})
@@ -426,22 +475,67 @@ const ReportsTable = () => {
 											<tr key={'total'}>
 												<td></td>
 												<td>
-													<span className="align-middle fw-bold"> TOTAL </span>
+													<span className="align-middle fw-bold"> TOTAL Sales </span>
 												</td>
 												<td>
-													<h3 className="align-middle fw-bold"> {`₦${store?.allData?.sumOfSales?.toLocaleString()}`} </h3>
+													<h3 className="align-middle fw-bold"> {`${store?.summaryData?.totalSales?.toLocaleString()} Sales`} </h3>
 												</td>
 											</tr>
+											<tr key={'total-amount'}>
+												<td></td>
+												<td>
+													<span className="align-middle fw-bold"> TOTAL Sales Amount </span>
+												</td>
+												<td>
+													<h3 className="align-middle fw-bold"> {`${store?.summaryData?.totalAmount?.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}`} </h3>
+												</td>
+											</tr>
+											<tr>
+												<td colSpan="3" className="text-center fw-bold"><h2>STATUS</h2></td>
+											</tr>
+											{store?.summaryData && Object.keys(store?.summaryData?.byStatus).map((key) => {
+												return (
+													<tr key={key}>
+														<td></td>
+														<td>
+															<span className="align-middle fw-bold"> {key} </span>
+														</td>
+														<td>
+															<h3 className="align-middle fw-bold"> {`${store?.summaryData?.byStatus[key].toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}`} </h3>
+														</td>
+													</tr>
+												)
+											})}
+											<tr>
+												<td colSpan="3" className="text-center fw-bold"><h2>PAYMENTS</h2></td>
+											</tr>
+											{store?.summaryData && Object.keys(store?.summaryData?.byPaymentMode).map((key) => {
+												return (
+													<tr key={key}>
+														<td></td>
+														<td>
+															<span className="align-middle fw-bold"> {key} </span>
+														</td>
+														<td>
+															<h3 className="align-middle fw-bold"> {`${store?.summaryData?.byPaymentMode[key].toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}`} </h3>
+														</td>
+													</tr>
+												)
+											})}
 											</tbody>
 										</Table>
 									</Fragment>
 								</ModalBody>
 								<ModalFooter>
-									<Button color="primary" onClick={() => toggleModal()} outline>
-										Accept
+									<Button color="secondary" onClick={() => toggleModal()} outline>
+										Close
+									</Button>
+									<Button color="primary" onClick={() => printReport(store?.summaryData, picker[0], picker[1])} outline>
+										Print Report
 									</Button>
 								</ModalFooter>
 							</Modal>
+						
 						</Col>
 					</Row>
 				</CardBody>

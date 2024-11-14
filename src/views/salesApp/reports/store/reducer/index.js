@@ -10,7 +10,7 @@ const initialState = {
 const reports = (state = initialState, action) => {
 	switch (action.type) {
 		case 'GET_ALL_REPORT_DATA':
-			return { ...state, allData: action.data, data: [] }
+			return { ...state, allData: action.data.saleslist, summaryData: action.data.reportSummary, data: [] }
 		case 'GET_FILTERED_REPORT_DATA':
 			return {
 				...state,

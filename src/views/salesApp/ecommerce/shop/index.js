@@ -26,11 +26,11 @@ const Shop = () => {
 	const store = useSelector((state) => state.ecommerce)
 	const servers = useSelector((state) => state.servers)
 
-	useEffect(() => {}, [dispatch])
+	// useEffect(() => {}, [dispatch])
 
 	// ** Get products
 	useEffect(() => {
-		dispatch(getAllData())
+		// dispatch(getAllData())
 		dispatch(
 			getProducts({
 				q: '',

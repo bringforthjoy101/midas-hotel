@@ -5,6 +5,7 @@ const initialState = {
 	total: 1,
 	params: {},
 	selectedUser: null,
+	selectedUserSummary: null,
 	userActivities: [],
 }
 
@@ -19,6 +20,8 @@ const users = (state = initialState, action) => {
 				total: action.totalPages,
 				params: action.params,
 			}
+		case 'GET_USER_REPORT_DATA': 
+			return { ...state, selectedUserSummary: action.data }
 		case 'GET_USER':
 			return { ...state, selectedUser: action.selectedUser }
 		case 'GET_ALL_USER_ACTIVITY':

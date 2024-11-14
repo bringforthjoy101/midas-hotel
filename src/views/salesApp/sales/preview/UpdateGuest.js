@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner, Label, Input, Form } from 'reactstrap'
 import { selectThemeColors, swal, apiRequest } from '@utils'
 import { useDispatch } from 'react-redux'
@@ -9,29 +9,39 @@ import {
 } from '../store/action'
 import Select from 'react-select'
 
-export const UpdateStatus = ({saleCompleted}) => {
+export const UpdateGuest = ({hasGuest}) => {
 	const dispatch = useDispatch()
 	const { id } = useParams()
 	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	const [modal, setModal] = useState(false)
+	const [allGuest, setAllGuest] = useState([])
+	const [selectedGuest, setSelectedGuest] = useState('')
+	console.log({ selectedGuest })
 
 	const toggleModal = () => {
 		setModal(!modal)
 	}
 
+	useEffect(() => {
+		apiRequest({ url: '/servers/get-guests', method: 'GET' }, dispatch).then((response) => {
+			setAllGuest(response.data.data.filter((lodge) => !lodge.checkout).map((lodge) => { return { ...lodge.reservationDetail.guest, room: lodge.reservationDetail.room } }))
+		})
+	}, [])
+
 	const onSubmit = async (event) => {
 		event?.preventDefault()
 		const form = event.target
 		const userData = {
-			mode: form.mode.value,
+			guestId: selectedGuest.guestId,
+			guestName: selectedGuest.label,
 		}
 		const body = JSON.stringify(userData)
 		try {
 			setIsSubmitting(true)
-			const response = await apiRequest({ url: `/sales/update-payment-mode/${id}`, method: 'POST', body }, dispatch)
+			const response = await apiRequest({ url: `/sales/update-guest-name/${id}`, method: 'POST', body }, dispatch)
 			if (response) {
-				if (response.data.message) {
+				if (response.data.status) {
 					swal('Great job!', response.data.message, 'success')
 					dispatch(getSale(id))
 					setIsSubmitting(false)
@@ -47,37 +57,31 @@ export const UpdateStatus = ({saleCompleted}) => {
 		}
 	}
 
-	const ModeOptions = [
-		{ value: '', label: 'Select Payment Mode' },
-		{ value: 'CASH', label: 'CASH' },
-		{ value: 'POS_MONIEPOINT', label: 'POS - MONIEPOINT' },
-		{ value: 'POS_FIDELITY', label: 'POS - FIDELITY' },
-		{ value: 'TRANSFER', label: 'BANK TRANSFER' },
-		{ value: 'COMPLEMENTARY', label: 'COMPLEMENTARY' },
-		{ value: 'GUEST', label: 'GUEST' },
-	]
-
 	return (
 		<>
-			<Button.Ripple className='mb-75' color="primary" onClick={toggleModal} outline block disabled={saleCompleted && true}>
-				Update Payment Mode
+			<Button.Ripple color="warning" onClick={toggleModal} outline block disabled={hasGuest && true}>
+				Update Charged Guest 
 			</Button.Ripple>
-			<Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered" modalClassName="modal-primary">
-				<ModalHeader toggle={toggleModal}>Update Payment Mode</ModalHeader>
+			<Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered" modalClassName="modal-warning">
+				<ModalHeader toggle={toggleModal}>Update Charged Guest</ModalHeader>
 				<Form onSubmit={onSubmit}>
 					<ModalBody>
 						<div className="mb-1">
 							<Label className="form-label" for="status">
-								Payment Mode
+								Select Guest Room
 							</Label>
 							<Select
-								id="mode"
-								name="mode"
+								id="guest"
+								name="guest"
 								theme={selectThemeColors}
 								className="react-select"
 								classNamePrefix="select"
-								options={ModeOptions}
+								defaultValue={selectedGuest}
+								options={allGuest?.map((guest) => {
+									return { value: guest.room.id, label: `${guest.fullName} (${guest.room.name})`, guestId: guest.id }
+								})}
 								isClearable={false}
+								onChange={setSelectedGuest}
 							/>
 						</div>
 					</ModalBody>
@@ -93,4 +97,4 @@ export const UpdateStatus = ({saleCompleted}) => {
 	)
 }
 
-export default UpdateStatus
+export default UpdateGuest

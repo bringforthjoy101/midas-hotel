@@ -429,8 +429,8 @@ mock.onGet('/apps/ecommerce/products').reply(async (config) => {
 	return [
 		200,
 		{
-			services: paginatedData,
-			filtered: products,
+			services: products,
+			filtered: paginatedData,
 			total: filteredData.length,
 			userWishlist: data.userWishlist,
 			userCart: data.userCart,

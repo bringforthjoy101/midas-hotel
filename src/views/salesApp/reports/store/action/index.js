@@ -5,12 +5,13 @@ export const getSalesReport = ({ startDate, endDate }) => {
 	return async (dispatch) => {
 		const body = JSON.stringify({ startDate, endDate })
 		const response = await apiRequest({ url: '/sales-report', method: 'POST', body }, dispatch)
+		const res = await apiRequest({ url: '/sales-summary', method: 'POST', body }, dispatch)
 		if (response) {
 			if (response.data.data && response.data.status) {
 
 				await dispatch({
 					type: 'GET_ALL_REPORT_DATA',
-					data: response.data.data
+					data: { saleslist: response.data.data, reportSummary: res.data.data },
 				})
 			} else {
 				console.log(response.error)

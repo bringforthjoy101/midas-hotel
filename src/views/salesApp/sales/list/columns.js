@@ -32,13 +32,18 @@ const getItemNames = (items) => {
 }
 
 const statusObj = {
-	PAID: 'light-success',
-	REVOKED: 'light-danger',
+	COMPLETED: 'light-success',
+	DRAFT: 'light-secondary',
+	CANCELLED: 'light-danger',
 }
 
 const modeObj = {
-	CASH: 'light-success',
-	REVOKED: 'light-danger',
+	CASH: 'light-primary',
+	POS_MONIEPOINT: 'light-info',
+	POS_FIDELITY: 'light-info',
+	TRANSFER: 'light-success',
+	COMPLEMENTARY: 'light-warning',
+	GUEST: 'light-secondary',
 }
 
 export const columns = [
@@ -98,7 +103,7 @@ export const columns = [
 		selector: 'mode',
 		sortable: true,
 		cell: (row) => (
-			<Badge className="text-capitalize" color={'light-primary'} pill>
+			<Badge className="text-capitalize" color={modeObj[row.mode]} pill>
 				{row.mode}
 			</Badge>
 		),
