@@ -51,7 +51,7 @@ const PreviewCard = ({ data }) => {
 				{/* Header */}
 				<div className="d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0">
 					<div>
-						<h4 className="invoice-title">MIDAS HOTEL</h4>
+						<h4 className="invoice-title">KLOFT HOTEL</h4>
 						{/*<div className="logo-wrapper">*/}
 						{/*	<Media className="mr-25" left>*/}
 						{/*		<Media*/}
