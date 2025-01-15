@@ -86,6 +86,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
 					>
 						<option value="">Select Product Type</option>
 						<option value="DRINKS">Drinks</option>
+						<option value="FOOD">Foods</option>
 						<option value="OTHERS">Others</option>
 					</AvInput>
 				</FormGroup>
